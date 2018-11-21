@@ -26,9 +26,11 @@ resource "aws_vpc" "this" {
 resource "aws_subnet" "public" {
   count = "${var.enable_public_subnet > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
 
-  vpc_id                  = "${aws_vpc.this.id}"
-  cidr_block              = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 504+count.index)}"
-  availability_zone       = "${element(data.aws_availability_zones.get_azs.names, count.index)}"
+  vpc_id     = "${aws_vpc.this.id}"
+  cidr_block = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 504+count.index)}"
+
+  # availability_zone       = "${element(data.aws_availability_zones.get_azs.names, count.index)}"
+  availability_zone       = "${element(var.azs, count.index)}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
   tags = "${merge(map("Name", format("%s-${var.public_subnet_suffix}-%s", var.organization, element(data.aws_availability_zones.get_azs.names, count.index))), var.tags, var.public_subnet_tags)}"

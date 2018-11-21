@@ -1,3 +1,7 @@
+variable "azs" {
+  description = "Define availability zone"
+}
+
 variable "organization" {
   description = "Define name all resources"
   type        = "string"
