@@ -1,7 +1,6 @@
 locals {
   get_azs = "${data.aws_availability_zones.get_azs.names}"
-  cidr_subnet_public = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 504+count.index)}"
-  cidr_subnet_private = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 496+count.index)}"
+  cidr_subnet_private = ""
 }
 
 # Get azs
@@ -25,7 +24,7 @@ resource "aws_subnet" "public" {
   count = "${var.enable_public_subnet > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
-  cidr_block              = "${local.cidr_subnet_public}"
+  cidr_block              = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 504+count.index)}"
   availability_zone       = "${element(data.aws_availability_zones.get_azs.names, count.index)}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
@@ -36,7 +35,7 @@ resource "aws_subnet" "private" {
   count = "${var.enable_private_subnet > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
-  cidr_block              = "${local.cidr_subnet_private}"
+  cidr_block              = "${cidrsubnet(aws_vpc.this.cidr_block, 9, 496+count.index)}"
   availability_zone       = "${element(data.aws_availability_zones.get_azs.names, count.index)}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
