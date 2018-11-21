@@ -72,10 +72,10 @@ variable "private_subnet_suffix" {
 
 variable "public_subnet_tags" {
   description = "Additional tags in public subnets"
-  default     = "{}"
+  default     = {}
 }
 
 variable "private_subnet_tags" {
   description = "Additional tags in private subnets"
-  default     = "{}"
+  default     = {}
 }
