@@ -52,12 +52,27 @@ variable "map_public_ip_on_launch" {
 
 variable "enable_public_subnet" {
   description = "Should be true if you want create public subnets calculate with all azs in the region"
-  default     = "false"
+  default     = false
 }
 
 variable "enable_private_subnet" {
   description = "Should be true if you want create private subnets calculate with all azs in the region"
-  default     = "false"
+  default     = false
+}
+
+variable "enable_intra_subnet" {
+  description = "Should be true if you want create intra subnets calculate with all azs in the region"
+  default     = false
+}
+
+variable "enable_database_subnet" {
+  description = "Should be true if you want create database subnets calculate with all azs in the region"
+  default     = false
+}
+
+variable "enable_mq_subnet" {
+  description = "Should be true if you want create mq subnets calculate with all azs in the region"
+  default     = false
 }
 
 variable "public_subnet_suffix" {
@@ -70,6 +85,21 @@ variable "private_subnet_suffix" {
   default     = "private"
 }
 
+variable "intra_subnet_suffix" {
+  description = "Suffix name intra subnet"
+  default     = "intra"
+}
+
+variable "database_subnet_suffix" {
+  description = "Suffix name database subnet"
+  default     = "database"
+}
+
+variable "mq_subnet_suffix" {
+  description = "Suffix name mq subnet"
+  default     = "mq"
+}
+
 variable "public_subnet_tags" {
   description = "Additional tags in public subnets"
   default     = {}
@@ -77,5 +107,20 @@ variable "public_subnet_tags" {
 
 variable "private_subnet_tags" {
   description = "Additional tags in private subnets"
+  default     = {}
+}
+
+variable "intra_subnet_tags" {
+  description = "Additional tags in intra subnets"
+  default     = {}
+}
+
+variable "database_subnet_tags" {
+  description = "Additional tags in database subnets"
+  default     = {}
+}
+
+variable "mq_subnet_tags" {
+  description = "Additional tags in mq subnets"
   default     = {}
 }
