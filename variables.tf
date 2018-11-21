@@ -1,6 +1,6 @@
 variable "azs" {
   description = "Define availability zone"
-  default = []
+  default     = []
 }
 
 variable "organization" {
