@@ -1,5 +1,6 @@
 variable "azs" {
   description = "Define availability zone"
+  default = []
 }
 
 variable "organization" {
@@ -54,29 +55,29 @@ variable "map_public_ip_on_launch" {
 # Subnets
 ###
 
-variable "enable_public_subnet" {
+variable "public_subnets" {
   description = "Should be true if you want create public subnets calculate with all azs in the region"
-  default     = false
+  default     = []
 }
 
-variable "enable_private_subnet" {
+variable "private_subnets" {
   description = "Should be true if you want create private subnets calculate with all azs in the region"
-  default     = false
+  default     = []
 }
 
-variable "enable_intra_subnet" {
+variable "intra_subnets" {
   description = "Should be true if you want create intra subnets calculate with all azs in the region"
-  default     = false
+  default     = []
 }
 
-variable "enable_database_subnet" {
+variable "database_subnets" {
   description = "Should be true if you want create database subnets calculate with all azs in the region"
-  default     = false
+  default     = []
 }
 
-variable "enable_mq_subnet" {
+variable "mq_subnets" {
   description = "Should be true if you want create mq subnets calculate with all azs in the region"
-  default     = false
+  default     = []
 }
 
 variable "public_subnet_suffix" {
