@@ -18,7 +18,7 @@ module "vpc" {
 
   cidr_vpc = "10.10.0.0/16"
 
-  public_subnets = "${cidrsubnet("10.10.0.0/16", 9, 504+length(${data.aws_availability_zones.azs.names}))}"
+  public_subnets = "${cidrsubnet("10.10.0.0/16", 9, 504+length(data.aws_availability_zones.azs.names))}"
 #  "${cidrsubnet(var.map_cidrvpc_nb-api[var.tier],9,496+count.index)}"
 #  enable_private_subnet = true
 #  enable_database_subnet = true

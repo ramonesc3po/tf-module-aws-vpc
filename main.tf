@@ -24,7 +24,7 @@ resource "aws_vpc" "this" {
 # Subnets
 ##
 resource "aws_subnet" "public" {
-  count = "${var.public_subnets > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
+  count = "${var.public_subnets > 0 ? length(var.azs) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
   cidr_block              = "${element(concat(var.public_subnets, list("")), count.index)}"
@@ -35,7 +35,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count = "${var.private_subnets > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
+  count = "${var.private_subnets > 0 ? length(var.azs) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
   cidr_block              = "${element(concat(var.private_subnets, list("")), count.index)}"
@@ -46,7 +46,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_subnet" "intra" {
-  count = "${var.intra_subnets > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
+  count = "${var.intra_subnets > 0 ? length(var.azs) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
   cidr_block              = "${element(concat(var.intra_subnets, list("")), count.index)}"
@@ -57,7 +57,7 @@ resource "aws_subnet" "intra" {
 }
 
 resource "aws_subnet" "database" {
-  count = "${var.database_subnets > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
+  count = "${var.database_subnets > 0 ? length(var.azs) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
   cidr_block              = "${element(concat(var.database_subnets, list("")), count.index)}"
@@ -68,7 +68,7 @@ resource "aws_subnet" "database" {
 }
 
 resource "aws_subnet" "mq" {
-  count = "${var.mq_subnets > 0 ? length(data.aws_availability_zones.get_azs.names) : 0}"
+  count = "${var.mq_subnets > 0 ? length(var.azs) : 0}"
 
   vpc_id                  = "${aws_vpc.this.id}"
   cidr_block              = "${element(concat(var.mq_subnets, list("")), count.index)}"
