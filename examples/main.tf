@@ -38,6 +38,9 @@ module "vpc" {
 
   create_db_route_table = "true"
 
+  enable_nat_gateway     = "true"
+  one_nat_gateway_per_az = "false"
+
   tags = {
     Tier         = "production"
     Organization = "zigzaga"
