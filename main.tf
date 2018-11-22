@@ -203,33 +203,33 @@ resource "aws_route_table_association" "public" {
   count = "${var.vpc_create && length(var.public_subnets) > 0 ? length(var.public_subnets) : 0}"
 
   route_table_id = "${element(aws_route_table.public.*.id, count.index)}"
-  subnet_id      = "${element(aws_subnet.public.*.id, 0)}"
+  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
 }
 
 resource "aws_route_table_association" "private" {
   count = "${var.vpc_create && length(var.private_subnets) > 0 ? length(var.private_subnets) : 0}"
 
   route_table_id = "${element(aws_route_table.private.*.id, (var.single_nat_gateway ? 0 : count.index))}"
-  subnet_id      = "${element(aws_subnet.private.*.id, 0)}"
+  subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
 }
 
 resource "aws_route_table_association" "intra" {
   count = "${var.vpc_create && length(var.intra_subnets) > 0 ? length(var.intra_subnets) : 0}"
 
   route_table_id = "${element(aws_route_table.intra.*.id, count.index)}"
-  subnet_id      = "${element(aws_subnet.intra.*.id, 0)}"
+  subnet_id      = "${element(aws_subnet.intra.*.id, count.index)}"
 }
 
 resource "aws_route_table_association" "database" {
   count = "${var.vpc_create && length(var.database_subnets) > 0 ? length(var.database_subnets) : 0}"
 
   route_table_id = "${element(coalescelist(aws_route_table.db.*.id, aws_route_table.private.*.id), (var.single_nat_gateway || var.create_db_route_table ? 0 : count.index))}"
-  subnet_id      = "${element(aws_subnet.database.*.id, 0)}"
+  subnet_id      = "${element(aws_subnet.database.*.id, count.index)}"
 }
 
 resource "aws_route_table_association" "mq" {
   count = "${var.vpc_create && length(var.mq_subnets) > 0 ? length(var.mq_subnets) : 0}"
 
   route_table_id = "${element(coalescelist(aws_route_table.mq.*.id, aws_route_table.private.*.id), (var.single_nat_gateway || var.create_mq_route_table ? 0 : count.index))}"
-  subnet_id      = "${element(aws_subnet.mq.*.id, 0)}"
+  subnet_id      = "${element(aws_subnet.mq.*.id, count.index)}"
 }
