@@ -216,7 +216,7 @@ resource "aws_route_table_association" "private" {
 resource "aws_route_table_association" "intra" {
   count = "${var.vpc_create && length(var.intra_subnets) > 0 ? length(var.intra_subnets) : 0}"
 
-  route_table_id = "${element(aws_route_table.intra.*.id, count.index)}"
+  route_table_id = "${element(aws_route_table.intra.*.id, 0)}"
   subnet_id      = "${element(aws_subnet.intra.*.id, count.index)}"
 }
 
