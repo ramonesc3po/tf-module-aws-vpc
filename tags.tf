@@ -10,30 +10,40 @@ variable "vpc_tags" {
 
 variable "igw_tags" {
   description = "Additional igw tags"
-  default = {}
+  default     = {}
 }
 
 variable "public_route_table_tags" {
   description = "Additional public route table tags"
-  default = {}
+  default     = {}
 }
 
 variable "private_route_table_tags" {
   description = "Additional private route table tags"
-  default = {}
+  default     = {}
 }
 
 variable "intra_route_table_tags" {
   description = "Additional intra route table tags"
-  default = {}
+  default     = {}
 }
 
 variable "db_route_table_tags" {
   description = "Additional db route table tags"
-  default = {}
+  default     = {}
 }
 
 variable "mq_route_table_tags" {
   description = "Additional mq route table tags"
-  default = {}
+  default     = {}
+}
+
+variable "nat_eip_tags" {
+  description = "Additional nat eip tags"
+  default     = {}
+}
+
+variable "nat_gateway_tags" {
+  description = "Additional nat gateway tags"
+  default     = {}
 }

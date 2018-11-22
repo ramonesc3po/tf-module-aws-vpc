@@ -17,7 +17,7 @@ resource "null_resource" "let_subnet" {
     private_subnets  = "${cidrsubnet("10.10.0.0/16", 9,496+count.index)}"
     intra_subnets    = "${cidrsubnet("10.10.0.0/16", 7, count.index)}"
     mq_subnets       = "${cidrsubnet("10.10.0.0/16", 7, 116+count.index)}"
-    database_subnets = "${cidrsubnet("10.10.0.0/16", 7, 118+count.index)}"
+    database_subnets = "${cidrsubnet("10.10.0.0/16", 8, 125+count.index)}"
   }
 }
 
@@ -35,6 +35,8 @@ module "vpc" {
   intra_subnets    = "${null_resource.let_subnet.*.triggers.intra_subnets}"
   mq_subnets       = "${null_resource.let_subnet.*.triggers.mq_subnets}"
   database_subnets = "${null_resource.let_subnet.*.triggers.database_subnets}"
+
+  create_db_route_table = "true"
 
   tags = {
     Tier         = "production"

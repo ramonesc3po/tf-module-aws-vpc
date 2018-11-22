@@ -135,12 +135,12 @@ variable "mq_subnet_tags" {
 ##
 variable "create_db_route_table" {
   description = "Create route table database subnet"
-  default = false
+  default     = false
 }
 
 variable "create_mq_route_table" {
   description = "Create route table mq subnet"
-  default = false
+  default     = false
 }
 
 ##
@@ -148,10 +148,26 @@ variable "create_mq_route_table" {
 ##
 variable "single_nat_gateway" {
   description = "Create once nat gateway"
-  default = true
+  default     = true
 }
 
 variable "one_nat_gateway_per_az" {
   description = "Create one nat gaterway per az"
-  default = false
+  default     = false
+}
+
+variable "enable_nat_gateway" {
+  description = "Should true you want create nat gateway"
+  default     = false
+}
+
+variable "reuse_nat_ips" {
+  description = "Should be true if you don't want EIPs to be created for your NAT Gateways and will instead pass them in via the 'external_nat_ip_ids' variable"
+  default     = false
+}
+
+variable "external_nat_ip_ids" {
+  description = "List of EIP IDs to be assigned to the NAT Gateways (used in combination with reuse_nat_ips)"
+  type        = "list"
+  default     = []
 }
