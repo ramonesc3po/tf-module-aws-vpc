@@ -129,3 +129,25 @@ variable "mq_subnet_tags" {
   description = "Additional tags in mq subnets"
   default     = {}
 }
+
+##
+# Route Table
+##
+variable "create_db_route_table" {
+  description = "Create route table database subnet"
+}
+
+variable "create_mq_route_table" {
+  description = "Create route table mq subnet"
+}
+
+##
+# Internet gateway and NAT
+##
+variable "single_nat_gateway" {
+  description = "Create once nat gateway"
+}
+
+variable "one_nat_gateway_per_az" {
+  description = "Create one nat gaterway per az"
+}
