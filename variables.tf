@@ -135,10 +135,12 @@ variable "mq_subnet_tags" {
 ##
 variable "create_db_route_table" {
   description = "Create route table database subnet"
+  default = false
 }
 
 variable "create_mq_route_table" {
   description = "Create route table mq subnet"
+  default = false
 }
 
 ##
@@ -146,8 +148,10 @@ variable "create_mq_route_table" {
 ##
 variable "single_nat_gateway" {
   description = "Create once nat gateway"
+  default = true
 }
 
 variable "one_nat_gateway_per_az" {
   description = "Create one nat gaterway per az"
+  default = false
 }
