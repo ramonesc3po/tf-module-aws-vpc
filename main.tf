@@ -213,6 +213,13 @@ resource "aws_route_table_association" "private" {
   subnet_id      = "${element(aws_subnet.private.*.id, 0)}"
 }
 
+resource "aws_route_table_association" "intra" {
+  count = "${var.vpc_create && length(var.intra_subnets) > 0 ? length(var.intra_subnets) : 0}"
+
+  route_table_id = "${element(aws_route_table.intra.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.intra.*.id, 0)}"
+}
+
 resource "aws_route_table_association" "database" {
   count = "${var.vpc_create && length(var.database_subnets) > 0 ? length(var.database_subnets) : 0}"
 
