@@ -47,3 +47,8 @@ variable "nat_gateway_tags" {
   description = "Additional nat gateway tags"
   default     = {}
 }
+
+variable "dhcp_options_tags" {
+  description = "Addtional dhcp_options tags"
+  default     = {}
+}
