@@ -3,6 +3,6 @@ output "cidr_block_vpc" {
   value       = "${element(concat(aws_vpc.this.*.cidr_block, list("")), 0)}"
 }
 
-  output "" {
+output "" {
   value = ""
 }
