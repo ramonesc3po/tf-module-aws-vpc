@@ -3,7 +3,7 @@ terraform {
 }
 
 locals {
-  max_subnet_length = "${max(length(var.private_subnets), length(var.database_subnets))}"
+  max_subnet_length = "${max(length(var.private_subnets), length(var.database_subnets), length(var.wallet_subnets))}"
   nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(var.azs) : local.max_subnet_length)}"
 }
 
@@ -150,6 +150,17 @@ resource "aws_route_table" "db" {
 }
 
 ##
+# Wallet routes
+##
+resource "aws_route_table" "wallet" {
+  count = "${var.vpc_create && var.create_wallet_route_table && length(var.wallet_subnets) > 0 ? 1 : 0}"
+
+  vpc_id = "${aws_vpc.this.id}"
+
+  tags = "${merge(var.tags, var.wallet_route_table_tags, map("Name", "${var.organization}-${var.wallet_subnet_suffix}"))}"
+}
+
+##
 # Intra routes
 ##
 resource "aws_route_table" "intra" {
@@ -205,6 +216,17 @@ resource "aws_subnet" "database" {
   map_public_ip_on_launch = false
 
   tags = "${merge(map("Name", format("%s-${var.database_subnet_suffix}-%s", var.organization, element(var.azs, count.index))), var.tags, var.database_subnet_tags)}"
+}
+
+resource "aws_subnet" "wallet" {
+  count = "${var.vpc_create && length(var.wallet_subnets) > 0 ? length(var.azs) : 0}"
+
+  vpc_id                  = "${aws_vpc.this.id}"
+  cidr_block              = "${element(concat(var.wallet_subnets, list("")), count.index)}"
+  availability_zone       = "${element(var.azs, count.index)}"
+  map_public_ip_on_launch = false
+
+  tags = "${merge(map("Name", format("%s-${var.wallet_subnet_suffix}-%s", var.organization, element(var.azs, count.index))), var.tags, var.wallet_subnet_tags)}"
 }
 
 resource "aws_subnet" "mq" {
