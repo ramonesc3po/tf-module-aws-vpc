@@ -271,6 +271,13 @@ resource "aws_route_table_association" "database" {
   subnet_id      = "${element(aws_subnet.database.*.id, count.index)}"
 }
 
+resource "aws_route_table_association" "wallet" {
+  count = "${var.vpc_create && length(var.wallet_subnets) > 0 ? length(var.wallet_subnets) : 0}"
+
+  route_table_id = "${element(coalescelist(aws_route_table.wallet.*.id, aws_route_table.private.*.id), (var.single_nat_gateway || var.create_wallet_route_table ? 0 : count.index))}"
+  subnet_id      = "${element(aws_subnet.wallet.*.id, count.index)}"
+}
+
 resource "aws_route_table_association" "mq" {
   count = "${var.vpc_create && length(var.mq_subnets) > 0 ? length(var.mq_subnets) : 0}"
 
