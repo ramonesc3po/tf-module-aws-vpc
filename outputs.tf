@@ -67,3 +67,7 @@ output "subnets_database_ids" {
   description = "Show all database ids"
   value = "${aws_subnet.database.*.id}"
 }
+
+output "route_table_public_ids" {
+  value = "${aws_route_table.public.*.id}"
+}
