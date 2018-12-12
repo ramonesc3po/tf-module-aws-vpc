@@ -33,6 +33,11 @@ variable "db_route_table_tags" {
   default     = {}
 }
 
+variable "wallet_route_table_tags" {
+  description = "Additional wallet route table tags"
+  default     = {}
+}
+
 variable "mq_route_table_tags" {
   description = "Additional mq route table tags"
   default     = {}
