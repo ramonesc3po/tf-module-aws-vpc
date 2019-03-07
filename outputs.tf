@@ -71,3 +71,7 @@ output "subnets_database_ids" {
 output "route_table_public_ids" {
   value = "${aws_route_table.public.*.id}"
 }
+
+output "nat_gw" {
+  value = "${element(concat(aws_nat_gateway.this.*.public_ip, list("")), local.nat_gateway_count)}"
+}
