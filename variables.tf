@@ -3,6 +3,11 @@ variable "azs" {
   default     = []
 }
 
+variable "name" {
+  description = "add custom name vpc"
+  default     = ""
+}
+
 variable "organization" {
   description = "Define name all resources"
   type        = "string"
@@ -28,6 +33,11 @@ variable "instance_tenancy" {
 
 variable "enable_dns_support" {
   description = "Set support DNS"
+  default     = "false"
+}
+
+variable "enable_dns_hostnames" {
+  description = "Set support hostnames DNS"
   default     = "false"
 }
 
