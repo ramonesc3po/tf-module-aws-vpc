@@ -5,6 +5,9 @@ terraform {
 locals {
   max_subnet_length = "${max(length(var.private_subnets), length(var.database_subnets), length(var.wallet_subnets))}"
   nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(var.azs) : local.max_subnet_length)}"
+  compose_vpc_name  = "${var.organization}-${var.name}"
+  vpc_default_name  = "${var.organization}"
+  vpc_name          = "${var.name != "" ? local.compose_vpc_name : local.vpc_default_name}"
 }
 
 ##
@@ -16,10 +19,11 @@ resource "aws_vpc" "this" {
   cidr_block                       = "${var.cidr_vpc}"
   instance_tenancy                 = "${var.instance_tenancy}"
   enable_dns_support               = "${var.enable_dns_support}"
+  enable_dns_hostnames             = "${var.enable_dns_hostnames}"
   enable_classiclink               = "${var.enable_classiclink}"
   assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
 
-  tags = "${merge(map("Name", format("%s", var.organization)), var.tags, var.vpc_tags)}"
+  tags = "${merge(map("Name", format("%s", local.vpc_name)), var.tags, var.vpc_tags)}"
 }
 
 ##
@@ -41,7 +45,7 @@ resource "aws_vpc_dhcp_options_association" "this" {
   count = "${var.vpc_create && var.enable_dhcp_options ? 1 : 0}"
 
   dhcp_options_id = "${aws_vpc_dhcp_options.this.id}"
-  vpc_id = "${aws_vpc.this.id}"
+  vpc_id          = "${aws_vpc.this.id}"
 }
 
 ##
