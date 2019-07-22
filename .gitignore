@@ -9,3 +9,4 @@ terraform.tfplan
 .*.swp
 .idea
 *.plan
+./.terraform

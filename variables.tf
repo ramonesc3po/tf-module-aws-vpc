@@ -10,24 +10,24 @@ variable "name" {
 
 variable "organization" {
   description = "Define name all resources"
-  type        = "string"
+  type        = string
   default     = "megastructure"
 }
 
 variable "vpc_create" {
   description = "Set the true for create vpc or false no create a new vpc"
-  type        = "string"
+  type        = string
   default     = "true"
 }
 
 variable "cidr_vpc" {
   description = "Set the cidr block for a new vpc"
-  type        = "string"
+  type        = string
 }
 
 variable "instance_tenancy" {
   description = "Set default vpc"
-  type        = "string"
+  type        = string
   default     = "default"
 }
 
@@ -76,19 +76,19 @@ variable "dhcp_options_domain_name" {
 
 variable "dhcp_options_domain_name_servers" {
   description = "Set a list of DNS server addresses for DHCP options set, default AWS provided"
-  type        = "list"
+  type        = list(string)
   default     = ["AmazonProvidedDNS"]
 }
 
 variable "dhcp_options_ntp_servers" {
   description = "Specify a list of NTP servers for DHCP options set"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "dhcp_options_netbios_name_servers" {
   description = "Specify a list of netbios server for DHCP options set"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -234,6 +234,7 @@ variable "reuse_nat_ips" {
 
 variable "external_nat_ip_ids" {
   description = "List of EIP IDs to be assigned to the NAT Gateways (used in combination with reuse_nat_ips)"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
+
