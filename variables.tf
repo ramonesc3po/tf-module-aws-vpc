@@ -126,6 +126,11 @@ variable "wallet_subnets" {
   default     = []
 }
 
+variable "mgmt_subnets" {
+  description = "Should be true if you want create mgmt subnets calculate with all azs in the region"
+  default     = []
+}
+
 variable "mq_subnets" {
   description = "Should be true if you want create mq subnets calculate with all azs in the region"
   default     = []
@@ -154,6 +159,11 @@ variable "database_subnet_suffix" {
 variable "wallet_subnet_suffix" {
   description = "Suffix name wallet subnet"
   default     = "wallet"
+}
+
+variable "mgmt_subnet_suffix" {
+  description = "Suffix name wallet subnet"
+  default     = "mgmt"
 }
 
 variable "mq_subnet_suffix" {
@@ -186,6 +196,11 @@ variable "wallet_subnet_tags" {
   default     = {}
 }
 
+variable "mgmt_subnet_tags" {
+  description = "Additional tags in mgmt subnets"
+  default     = {}
+}
+
 variable "mq_subnet_tags" {
   description = "Additional tags in mq subnets"
   default     = {}
@@ -201,6 +216,11 @@ variable "create_db_route_table" {
 
 variable "create_wallet_route_table" {
   description = "Create route table wallet subnet"
+  default     = false
+}
+
+variable "create_mgmt_route_table" {
+  description = "Create route table mgmt subnet"
   default     = false
 }
 

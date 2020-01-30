@@ -8,6 +8,11 @@ output "vpc_id" {
   value       = element(concat(aws_vpc.this.*.id, [""]), 0)
 }
 
+output "subnets_mgmt_cidr_blocks" {
+  description = "Show all subnets cidr blocks mgmt"
+  value       = coalescelist([],aws_subnet.mgmt.*.cidr_block)
+}
+
 output "subnets_private_cidr_blocks" {
   description = "Show all subnets cidr blocks private"
   value       = aws_subnet.private.*.cidr_block
@@ -36,6 +41,11 @@ output "subnets_mq_cidr_blocks" {
 output "subnets_intra_cidr_blocks" {
   description = "Show all subnets cidr blocks intra"
   value       = aws_subnet.intra.*.cidr_block
+}
+
+output "subnets_mgmt_ids" {
+  description = "Show all mgmt ids"
+  value       = coalescelist([],aws_subnet.mgmt.*.id)
 }
 
 output "subnets_private_ids" {

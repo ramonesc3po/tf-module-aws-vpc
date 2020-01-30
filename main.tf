@@ -242,6 +242,23 @@ resource "aws_route_table" "wallet" {
 }
 
 ##
+# Mgmt routes
+##
+resource "aws_route_table" "mgmt" {
+  count = var.vpc_create && var.create_mgmt_route_table && length(var.mgmt_subnets) > 0 ? 1 : 0
+
+  vpc_id = aws_vpc.this[0].id
+
+  tags = merge(
+  var.tags,
+  var.mgmt_route_table_tags,
+  {
+    Name = "${var.organization}-${var.mgmt_subnet_suffix}"
+  },
+  )
+}
+
+##
 # Intra routes
 ##
 resource "aws_route_table" "intra" {
@@ -366,6 +383,28 @@ resource "aws_subnet" "wallet" {
   )
 }
 
+resource "aws_subnet" "mgmt" {
+  count = var.vpc_create && length(var.mgmt_subnets) > 0 ? length(var.azs) : 0
+
+  vpc_id                  = aws_vpc.this[0].id
+  cidr_block              = element(concat(var.mgmt_subnets, [""]), count.index)
+  availability_zone       = element(var.azs, count.index)
+  map_public_ip_on_launch = false
+
+  tags = merge(
+  {
+    Name = format(
+    "%s-${var.mgmt_subnet_suffix}-%s",
+    var.organization,
+    element(var.azs, count.index),
+    )
+  },
+  var.tags,
+  var.mgmt_subnet_tags,
+  )
+}
+
+
 resource "aws_subnet" "mq" {
   count = var.vpc_create && length(var.mq_subnets) > 0 ? length(var.azs) : 0
 
@@ -433,6 +472,17 @@ resource "aws_route_table_association" "wallet" {
   )
   subnet_id = element(aws_subnet.wallet.*.id, count.index)
 }
+
+resource "aws_route_table_association" "mgmt" {
+  count = var.vpc_create && length(var.mgmt_subnets) > 0 ? length(var.mgmt_subnets) : 0
+
+  route_table_id = element(
+  coalescelist(aws_route_table.mgmt.*.id, aws_route_table.private.*.id),
+  var.single_nat_gateway || var.create_mgmt_route_table ? 0 : count.index,
+  )
+  subnet_id = element(aws_subnet.mgmt.*.id, count.index)
+}
+
 
 resource "aws_route_table_association" "mq" {
   count = var.vpc_create && length(var.mq_subnets) > 0 ? length(var.mq_subnets) : 0
