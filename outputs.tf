@@ -10,7 +10,7 @@ output "vpc_id" {
 
 output "subnets_mgmt_cidr_blocks" {
   description = "Show all subnets cidr blocks mgmt"
-  value       = coalescelist([],aws_subnet.mgmt.*.cidr_block)
+  value       = coalescelist([], aws_subnet.mgmt.*.cidr_block)
 }
 
 output "subnets_private_cidr_blocks" {
@@ -45,7 +45,7 @@ output "subnets_intra_cidr_blocks" {
 
 output "subnets_mgmt_ids" {
   description = "Show all mgmt ids"
-  value       = coalescelist([],aws_subnet.mgmt.*.id)
+  value       = coalescelist([], aws_subnet.mgmt.*.id)
 }
 
 output "subnets_private_ids" {
@@ -78,8 +78,16 @@ output "subnets_database_ids" {
   value       = aws_subnet.database.*.id
 }
 
-output "route_table_public_ids" {
-  value = aws_route_table.public.*.id
+output "route_table_public_id" {
+  value = join("", aws_route_table.public.*.id)
+}
+
+output "route_table_private_id" {
+  value = join("", aws_route_table.private.*.id)
+}
+
+output "route_table_database_id" {
+  value = join("", aws_route_table.db.*.id)
 }
 
 output "nat_gw" {
