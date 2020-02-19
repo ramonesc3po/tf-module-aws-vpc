@@ -90,6 +90,14 @@ output "route_table_database_id" {
   value = join("", aws_route_table.db.*.id)
 }
 
+output "route_table_mgmt_id" {
+  value = join("", aws_route_table.mgmt.*.id)
+}
+
+output "route_table_intra_id" {
+  value = join("", aws_route_table.intra.*.id)
+}
+
 output "nat_gw" {
   value = element(
     concat(aws_nat_gateway.this.*.public_ip, [""]),
