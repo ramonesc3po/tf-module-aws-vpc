@@ -20,7 +20,7 @@ variable "vpc_create" {
   default     = "true"
 }
 
-variable "mgmt_public" {
+variable "enable_mgmt_public" {
   description = "Define use igw route_table mgmt or false no create igw in route_table"
   type        = string
   default     = "false"

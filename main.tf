@@ -170,7 +170,7 @@ resource "aws_route" "public_igw" {
 }
 
 resource "aws_route" "mgmt_igw" {
-  count = var.vpc_create && var.create_mgmt_route_table && var.mgmt_public && length(var.mgmt_subnets) > 0 ? 1 : 0
+  count = var.vpc_create && var.create_mgmt_route_table && var.enable_mgmt_public && length(var.mgmt_subnets) > 0 ? 1 : 0
 
   route_table_id         = aws_route_table.mgmt[0].id
   destination_cidr_block = "0.0.0.0/0"
