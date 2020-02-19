@@ -1,5 +1,5 @@
 locals {
-  max_subnet_length = max(length(var.private_subnets), length(var.database_subnets),length(var.wallet_subnets), length(var.mgmt_subnets))
+  max_subnet_length = max(length(var.private_subnets), length(var.database_subnets), length(var.wallet_subnets), length(var.mgmt_subnets))
   nat_gateway_count = var.single_nat_gateway ? 1 : var.one_nat_gateway_per_az ? length(var.azs) : local.max_subnet_length
   compose_vpc_name  = "${var.organization}-${var.name}"
   vpc_default_name  = var.organization
@@ -169,6 +169,14 @@ resource "aws_route" "public_igw" {
   }
 }
 
+resource "aws_route" "mgmt_igw" {
+  count = var.vpc_create && var.create_mgmt_route_table && var.mgmt_public && length(var.mgmt_subnets) > 0 ? 1 : 0
+
+  route_table_id         = aws_route_table.mgmt[0].id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.this[0].id
+}
+
 ##
 # Private routes
 ##
@@ -250,11 +258,11 @@ resource "aws_route_table" "mgmt" {
   vpc_id = aws_vpc.this[0].id
 
   tags = merge(
-  var.tags,
-  var.mgmt_route_table_tags,
-  {
-    Name = "${var.organization}-${var.mgmt_subnet_suffix}"
-  },
+    var.tags,
+    var.mgmt_route_table_tags,
+    {
+      Name = "${var.organization}-${var.mgmt_subnet_suffix}"
+    },
   )
 }
 
@@ -392,15 +400,15 @@ resource "aws_subnet" "mgmt" {
   map_public_ip_on_launch = false
 
   tags = merge(
-  {
-    Name = format(
-    "%s-${var.mgmt_subnet_suffix}-%s",
-    var.organization,
-    element(var.azs, count.index),
-    )
-  },
-  var.tags,
-  var.mgmt_subnet_tags,
+    {
+      Name = format(
+        "%s-${var.mgmt_subnet_suffix}-%s",
+        var.organization,
+        element(var.azs, count.index),
+      )
+    },
+    var.tags,
+    var.mgmt_subnet_tags,
   )
 }
 
@@ -477,8 +485,8 @@ resource "aws_route_table_association" "mgmt" {
   count = var.vpc_create && length(var.mgmt_subnets) > 0 ? length(var.mgmt_subnets) : 0
 
   route_table_id = element(
-  coalescelist(aws_route_table.mgmt.*.id, aws_route_table.private.*.id),
-  var.single_nat_gateway || var.create_mgmt_route_table ? 0 : count.index,
+    coalescelist(aws_route_table.mgmt.*.id, aws_route_table.private.*.id),
+    var.single_nat_gateway || var.create_mgmt_route_table ? 0 : count.index,
   )
   subnet_id = element(aws_subnet.mgmt.*.id, count.index)
 }
