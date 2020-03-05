@@ -140,6 +140,18 @@ resource "aws_route" "private_nat_gateway" {
   }
 }
 
+resource "aws_route" "mgmt_nat_gateway" {
+  count = var.vpc_create && var.enable_nat_gateway && var.enable_mgmt_public == "false" ? local.nat_gateway_count : 0
+
+  route_table_id         = element(aws_route_table.mgmt.*.id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = element(aws_nat_gateway.this.*.id, count.index)
+
+  timeouts {
+    create = "5m"
+  }
+}
+
 ##
 # Public Routes
 ##
